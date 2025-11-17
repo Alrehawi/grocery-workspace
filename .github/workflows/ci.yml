@@ -1,37 +1,55 @@
-name: CI
+name: CI - Nx Cloud
 
 on:
   push:
-    branches:
-      - main
-      - master   # optional: keep if you ever use master
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
-      - master
+    branches: [ main ]
 
 permissions:
   actions: read
   contents: read
 
 jobs:
-  main:
+  nx-cloud:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # 1️⃣ Checkout the code
+      - name: Checkout repo
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Cache node_modules
-      - uses: actions/setup-node@v4
+      # 2️⃣ Setup Node.js and cache node_modules
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - run: npm ci
-      - run: npx playwright install --with-deps
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
-      - run: npx nx run-many -t lint test build e2e
-      - run: npx nx fix-ci
+      # 4️⃣ Install Playwright dependencies (if using Playwright)
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      # 5️⃣ Start Nx Cloud CI run
+      - name: Start Nx Cloud CI Run
+        env:
+          NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
+        run: npx nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
+
+      # 6️⃣ Run Nx tasks (lint, test, build, e2e)
+      - name: Run Nx tasks
+        env:
+          NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
+        run: npx nx run-many -t lint test build e2e
+
+      # 7️⃣ Record logs / fix CI automatically
+      - name: Nx fix-ci
+        env:
+          NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
+        run: npx nx fix-ci
         if: always()
