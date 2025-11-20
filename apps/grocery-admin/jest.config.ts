@@ -1,8 +1,8 @@
 export default {
   displayName: 'grocery-admin',
-  preset: '../jest.preset.js',
+  preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../coverage/grocery-admin',
+  coverageDirectory: '../../coverage/apps/grocery-admin',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
