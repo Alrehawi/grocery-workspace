@@ -2,7 +2,12 @@
   "name": "@grocery-workspace/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "npx nx build grocery-admin --configuration=production --verbose",
+    "vercel-build": "npm run build",
+    "start": "npx nx serve grocery-admin"
+
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "~20.3.0",
@@ -57,4 +62,7 @@
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0"
   }
+
+
 }
+
