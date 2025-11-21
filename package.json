@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "build": "npx nx build grocery-admin --configuration=production --verbose",
-  "vercel-build": "npm run build",
-  "start": "npx nx serve grocery-admin"
+    "vercel-build": "npm run build",
+    "start": "npx nx serve grocery-admin"
 
   },
   "private": true,

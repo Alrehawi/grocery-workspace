@@ -5,6 +5,7 @@
       "use": "@vercel/static-build",
       "config": { "distDir": "dist/apps/grocery-admin" }
     }
+    
   ],
   "routes": [
     { "handle": "filesystem" },
